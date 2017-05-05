@@ -18,6 +18,7 @@ exports.main = {
     }
   },
   handler(request, reply) {
+    const server = request.server;
     const url = request.query.url;
     const randFldr = rando(18);
     const dir = `./screenshots/${randFldr}`;
@@ -33,9 +34,16 @@ exports.main = {
 
     command.push(url);
 
-    exec(command.join(" "), (err, stdout, stderr) => {
-      console.log(stdout);
+    const output = exec(command.join(" "), (err, stdout, stderr) => {
       reply.file(`${dir}/screenshot.png`);
+    });
+
+    output.stdout.on('data', (data) => {
+      server.log(['debug'], data);
+    });
+    
+    output.stderr.on('data', (data) => {
+      server.log(['error'], data);
     });
   }
 };

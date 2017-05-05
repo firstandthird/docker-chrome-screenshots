@@ -1,22 +1,23 @@
-# Lighthouse CI
+# `micro-snaps` ;)
 
-## Build the image
+A simple microservice that uses the `google-chrome` headless server to take snapshots of websites.
 
-```bash
-docker build -t lighthouse_ci .
-```
+## Build the service
 
-## Run the container
+Includes a `docker-compose` file for development. Or use the included `./run` command.
 
-```bash
-## Run a new container
-docker run -d -p 8080:8080 --cap-add=SYS_ADMIN lighthouse_ci
-```
+In production, you must use the `--cap-add=SYS_ADMIN` (at the minimum) or else the `google-chrome` command will not work.
 
 ## Usage
 
-```bash
-curl -X GET 'http://localhost:8080?format=${format}&url=${url}'
-```
+`https://micro-snaps.domain.com/?url={domain}&viewport={viewportString}`
 
-where `format` is one of `json`, `html`.
+### Options
+
+`url` - Required.
+
+The url of the page you would like to take a screenshot of.
+
+`viewport` - Optional
+
+The dimensions of the window you would like the app to use, in a comma seperated *W,H* string. For example for a window of 1200 x 900, you would pass `viewport=1200,900`.
