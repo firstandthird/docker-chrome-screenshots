@@ -1,0 +1,17 @@
+#!/bin/bash
+
+NAME=docker_chrome_ss
+CMD=$1
+shift
+ARGS=$@
+
+if [[ -z "$CMD" ]]; then
+  docker-compose build &&
+  docker-compose up
+  exit
+fi
+
+if [[ "$CMD" == "shell" ]]; then
+  docker-compose run --rm app sh
+  exit
+fi

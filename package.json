@@ -1,0 +1,22 @@
+{
+  "name": "lighthouse_ci",
+  "version": "0.0.1",
+  "description": "A Docker CI server for the Lighthouse",
+  "author": "Cedric Bellet, Eric Bidelman <ebidel@>",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "rapptor",
+    "dev:server": "npm install && nodemon -x npm start",
+    "dev:debug": "node --inspect ./node_modules/.bin/rapptor",
+    "lint": "eslint .",
+    "test": "PORT=8081 lab -M 30000"
+  },
+  "dependencies": {
+    "inert": "^4.2.0",
+    "rapptor": "1.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "1.11.0"
+  }
+}
