@@ -15,3 +15,9 @@ if [[ "$CMD" == "shell" ]]; then
   docker-compose run --rm app sh
   exit
 fi
+
+
+if [[ "$CMD" == "run" ]]; then
+  docker-compose run --rm app $ARGS
+  exit
+fi

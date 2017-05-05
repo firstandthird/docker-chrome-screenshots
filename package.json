@@ -1,9 +1,9 @@
 {
-  "name": "lighthouse_ci",
+  "name": "micro-snaps",
   "version": "0.0.1",
-  "description": "A Docker CI server for the Lighthouse",
-  "author": "Cedric Bellet, Eric Bidelman <ebidel@>",
-  "license": "Apache-2.0",
+  "description": "A micro service that creates snapshots of websites.",
+  "author": "Eric Willis, First & Third",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "start": "rapptor",
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "inert": "^4.2.0",
+    "joi": "^10.4.1",
     "rapptor": "1.13.0"
   },
   "devDependencies": {
