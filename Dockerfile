@@ -20,7 +20,6 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 sudo apt-get update &&\
 sudo apt-get install -y google-chrome-stable
 
-# Install express
 COPY package.json /app
 RUN npm install
 
@@ -31,11 +30,11 @@ EXPOSE 8080
 ## ===================
 
 # Add a user and make it a sudo user
-RUN useradd -m chromeuser && sudo adduser chromeuser sudo
+# RUN useradd -m chromeuser && sudo adduser chromeuser sudo
 
 # Copy the chrome-user script used to start Chrome as non-root
-COPY chromeuser-script.sh /app
-RUN chmod +x /app/chromeuser-script.sh
+# COPY chromeuser-script.sh /app
+# RUN chmod +x /app/chromeuser-script.sh
 
 COPY . /app
 
