@@ -1,5 +1,6 @@
 const crypto = require('crypto');
-const exec = require('child_process').exec;
+const puppeteer = require('puppeteer');
+const fs = require('fs');
 const Joi = require('joi');
 
 const rando = function(len) {
@@ -12,38 +13,68 @@ exports.main = {
   config: {
     validate: {
       query: {
-        url: Joi.string().required(),
-        viewport: Joi.string().optional()
+        url: Joi.string().uri().required(),
+        viewport: Joi.string().optional(),
+        pixelRatio: Joi.number().integer().min(1).optional()
       }
     }
   },
-  handler(request, reply) {
+  async handler(request, reply) {
     const server = request.server;
     const url = request.query.url;
     const randFldr = rando(18);
     const dir = `./screenshots/${randFldr}`;
+    const outputFile = `${dir}/screenshot.png`;
+    
+    try {
+      let browser;
 
-    const command = [];
+      fs.mkdirSync(dir);
+      
+      if (request.query.wsEndpoint) {
+        console.log(`Connecting to browser websocket at "${request.query.wsEndpoint}".`);
+        browser = await puppeteer.connect({
+          browserWSEndpoint: request.query.wsEndpoint
+        });
+      } else {
+        browser = await puppeteer.launch();
+      }
 
-    command.push(`mkdir -p ${dir} && cd ${dir} &&`);
-    command.push('google-chrome --headless --disable-gpu --screenshot');
+      const page = await browser.newPage();
 
-    if (request.query.viewport) {
-      command.push(`--window-size=${request.query.viewport}`);
+      if (request.query.viewport) {
+        const [width, height] = request.query.viewport.split(',');
+        
+        await page.setViewport({
+          width: parseInt(width, 10) || 1200,
+          height: parseInt(height, 10) || 800,
+          deviceScaleFactor: request.query.pixelRatio || 1
+        });
+      }
+
+      await page.goto(url, {
+        waitUntil: 'networkidle0'
+      });
+
+      await page.screenshot({
+        path: outputFile,
+        fullPage: true
+      });
+
+      await browser.close();
+
+      server.log(['debug'], outputFile);
+
+      Promise.resolve(outputFile);
+
+      return reply.file(outputFile);
+    }
+    catch (e) {
+        console.log(`Error while parsing "${request.query.url}"`, e);
+        server.log(['error'], e);
+
+        return Promise.resolve(null);
     }
 
-    command.push(url);
-
-    const output = exec(command.join(" "), (err, stdout, stderr) => {
-      reply.file(`${dir}/screenshot.png`);
-    });
-
-    output.stdout.on('data', (data) => {
-      server.log(['debug'], data);
-    });
-    
-    output.stderr.on('data', (data) => {
-      server.log(['error'], data);
-    });
   }
 };
