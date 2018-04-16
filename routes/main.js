@@ -15,7 +15,8 @@ exports.main = {
       query: {
         url: Joi.string().uri().required(),
         viewport: Joi.string().optional(),
-        pixelRatio: Joi.number().integer().min(1).optional()
+        pixelRatio: Joi.number().integer().min(1).optional(),
+        wsEndpoint: Joi.string().optional()
       }
     }
   },
@@ -47,7 +48,7 @@ exports.main = {
         
         await page.setViewport({
           width: parseInt(width, 10) || 1200,
-          height: parseInt(height, 10) || 800,
+          height: parseInt(height, 10) || 900,
           deviceScaleFactor: request.query.pixelRatio || 1
         });
       }
@@ -64,16 +65,12 @@ exports.main = {
       await browser.close();
 
       server.log(['debug'], outputFile);
-
-      Promise.resolve(outputFile);
-
       return reply.file(outputFile);
     }
     catch (e) {
         console.log(`Error while parsing "${request.query.url}"`, e);
         server.log(['error'], e);
-
-        return Promise.resolve(null);
+        return null;
     }
 
   }
