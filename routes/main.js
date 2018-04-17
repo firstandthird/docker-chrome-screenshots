@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const puppeteer = require('puppeteer');
-const fs = require('fs');
+const fs = require('fs-extra');
 const Joi = require('joi');
 
 const rando = function(len) {
@@ -30,7 +30,7 @@ exports.main = {
     try {
       let browser;
 
-      fs.mkdirSync(dir);
+      await fs.ensureDir(dir);
       
       if (request.query.wsEndpoint) {
         console.log(`Connecting to browser websocket at "${request.query.wsEndpoint}".`);
