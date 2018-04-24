@@ -10,8 +10,8 @@ WORKDIR /app
 RUN apt-get update --fix-missing && apt-get -y upgrade &&\
 apt-get install -y sudo curl wget unzip git
 
-# Install node 6
-RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - &&\
+# Install node 8
+RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - &&\
 sudo apt-get install -y nodejs
 
 # Install Chrome for Ubuntu

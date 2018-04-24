@@ -1,2 +1,3 @@
+wsEndpoint: '{{getEnv("BROWSERLESS_URL", "")}}'
 plugins:
   'inert':

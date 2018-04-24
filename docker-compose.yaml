@@ -1,11 +1,11 @@
 app:
   build: '.'
-  command: "npm run dev:server"
-  cap_add:
-    - SYS_ADMIN
+  ports:
+    - '8080:8080'
   volumes:
-    - '.:/app'
+    - '.:/home/app/src'
   environment:
     PORT: 8080
     VIRTUAL_HOST: 'snaps.*'
     VIRTUAL_PORT: 8080
+    BROWSERLESS_URL:
