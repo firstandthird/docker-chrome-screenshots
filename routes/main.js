@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const puppeteer = require('puppeteer');
 const fs = require('fs-extra');
 const Joi = require('joi');
+require('dotenv').config();
 
 const rando = function(len) {
   return crypto.randomBytes(Math.ceil(len/2)).toString('hex').slice(0,len);
@@ -26,16 +27,17 @@ exports.main = {
     const randFldr = rando(18);
     const dir = `./screenshots/${randFldr}`;
     const outputFile = `${dir}/screenshot.png`;
+    const wsEndpoint = process.env.BROWSERLESS_URL || request.query.wsEndpoint;
     
     try {
       let browser;
 
       await fs.ensureDir(dir);
       
-      if (request.query.wsEndpoint) {
-        console.log(`Connecting to browser websocket at "${request.query.wsEndpoint}".`);
+      if (wsEndpoint) {
+        console.log(`Connecting to browser websocket at "${wsEndpoint}".`);
         browser = await puppeteer.connect({
-          browserWSEndpoint: request.query.wsEndpoint
+          browserWSEndpoint: wsEndpoint
         });
       } else {
         browser = await puppeteer.launch();
