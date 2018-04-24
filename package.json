@@ -1,8 +1,8 @@
 {
   "name": "micro-snaps",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A micro service that creates snapshots of websites.",
-  "author": "Eric Willis, First & Third",
+  "author": "First & Third",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
