@@ -2,7 +2,6 @@ const crypto = require('crypto');
 const puppeteer = require('puppeteer');
 const fs = require('fs-extra');
 const Joi = require('joi');
-require('dotenv').config();
 
 const rando = function(len) {
   return crypto.randomBytes(Math.ceil(len/2)).toString('hex').slice(0,len);
@@ -27,8 +26,8 @@ exports.main = {
     const randFldr = rando(18);
     const dir = `./screenshots/${randFldr}`;
     const outputFile = `${dir}/screenshot.png`;
-    const wsEndpoint = process.env.BROWSERLESS_URL || request.query.wsEndpoint;
-    
+    const wsEndpoint = request.query.wsEndpoint || server.settings.app.wsEndpoint;
+
     try {
       let browser;
 

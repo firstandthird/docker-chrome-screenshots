@@ -8,3 +8,4 @@ app:
     PORT: 8080
     VIRTUAL_HOST: 'snaps.*'
     VIRTUAL_PORT: 8080
+    BROWSERLESS_URL:
